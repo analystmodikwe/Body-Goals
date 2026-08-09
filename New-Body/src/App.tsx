@@ -1,8 +1,8 @@
-
 import { useState } from 'react';
 import { UserProfileProvider, useUserProfile } from './context/UserProfileContext';
 import UserProfileForm from './components/forms/UserProfileForm';
 import ResultsDashboard from './components/dashboard/ResultsDashboard';
+import WeeklyMealPlan from './components/mealplan/WeeklyMealPlan';
 
 // Three possible screens: fill in the form, view targets, view the meal
 // plan. `view` only ever matters once targets exist — if targets are
@@ -18,23 +18,7 @@ function AppContent() {
   }
 
   if (view === 'mealPlan') {
-    // WeeklyMealPlan isn't built yet — temporary placeholder so the
-    // "See my meal plan" button has somewhere to go in the meantime.
-    return (
-      <div className="min-h-screen bg-paper flex items-center justify-center p-8">
-        <div className="text-center">
-          <p className="font-display text-2xl text-ink mb-4">
-            Weekly meal plan coming next step
-          </p>
-          <button
-            onClick={() => setView('results')}
-            className="font-body text-sm text-muted underline"
-          >
-            ← Back to targets
-          </button>
-        </div>
-      </div>
-    );
+    return <WeeklyMealPlan onBack={() => setView('results')} />;
   }
 
   return <ResultsDashboard onViewMealPlan={() => setView('mealPlan')} />;
