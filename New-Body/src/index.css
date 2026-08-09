@@ -1,1 +1,22 @@
+
 @import "tailwindcss";
+
+/* ============================================================================
+   DESIGN TOKENS
+   ----------------------------------------------------------------------------
+   Defined via Tailwind v4's @theme directive, which auto-generates utility
+   classes from these variables (e.g. --color-ink -> bg-ink, text-ink,
+   border-ink). See design rationale in the form component for the "why".
+   ============================================================================ */
+@theme {
+  --color-ink: #12211a;
+  --color-paper: #e9ece3;
+  --color-paper-soft: #f4f5ef;
+  --color-gold: #d8a13b;
+  --color-brick: #8c3b2e;
+  --color-muted: #5b6b5e;
+
+  --font-display: "Fraunces", serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
