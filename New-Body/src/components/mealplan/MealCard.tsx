@@ -20,6 +20,10 @@ export default function MealCard({ meal }: MealCardProps) {
   meal.mealDbSearchTerm,
   meal.mealDbCategory
  );
+  const { plannedMacros } = meal;
+
+
+
 
   // Only worth mentioning portion size when it's meaningfully different
   // from a standard single serving.
