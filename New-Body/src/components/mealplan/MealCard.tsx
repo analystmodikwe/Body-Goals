@@ -16,8 +16,10 @@ interface MealCardProps {
 }
 
 export default function MealCard({ meal }: MealCardProps) {
-  const { imageUrl, isLoading, hasError } = useMealDetails(meal.mealDbSearchTerm);
-  const { plannedMacros } = meal;
+  const { imageUrl, isLoading, hasError } = useMealDetails(
+  meal.mealDbSearchTerm,
+  meal.mealDbCategory
+ );
 
   // Only worth mentioning portion size when it's meaningfully different
   // from a standard single serving.
