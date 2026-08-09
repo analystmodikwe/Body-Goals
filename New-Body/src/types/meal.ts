@@ -16,10 +16,35 @@ export type MacroProfile =
   | 'low_carb'
   | 'high_fiber';
 
+// TheMealDB's actual category list (from their categories.php endpoint).
+// Used as a fallback: if searching by exact meal name finds nothing, we
+// browse this category instead so a real food photo still shows up rather
+// than a blank placeholder.
+export type TheMealDbCategory =
+  | 'Beef'
+  | 'Chicken'
+  | 'Dessert'
+  | 'Lamb'
+  | 'Miscellaneous'
+  | 'Pasta'
+  | 'Pork'
+  | 'Seafood'
+  | 'Side'
+  | 'Starter'
+  | 'Vegan'
+  | 'Vegetarian'
+  | 'Breakfast'
+  | 'Goat';
+
+// A single curated entry in our local meal catalog. `mealDbSearchTerm` is
+// what we search TheMealDB with first; `mealDbCategory` is the fallback if
+// that exact search finds nothing (TheMealDB only has ~300 recipes total,
+// so plenty of our search terms won't match anything by name).
 export interface MealCatalogEntry {
   id: string;
   name: string;
   mealDbSearchTerm: string;
+  mealDbCategory: TheMealDbCategory;
   slot: MealSlot;
   profile: MacroProfile;
   isCheatMeal: boolean;
@@ -32,6 +57,7 @@ export interface MealCatalogEntry {
   };
 }
 
+// Shape returned by TheMealDB's search.php?s= endpoint (fields we care about).
 export interface TheMealDbMeal {
   idMeal: string;
   strMeal: string;
