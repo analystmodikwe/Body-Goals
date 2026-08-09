@@ -1,7 +1,7 @@
 
 # New Body — Nutrition & Meal Planner
 
-DEPLOYED LINK : body-goals-green.vercel.app
+DEPLOYED LINK : https://body-goals-green.vercel.app/
 
 A frontend-only fitness web app that calculates personalised daily calorie,
 macro, and water targets for losing fat while building muscle, then
