@@ -2,13 +2,15 @@
 // useMealDetails
 // ----------------------------------------------------------------------------
 // Fetches image + instructions for one meal from TheMealDB, given its
-// mealDbSearchTerm. Same meal can appear more than once across the week
-// (e.g. a repeated snack), so results are cached in memory by search term —
-// each unique meal is only fetched once per app session, not once per card.
+// mealDbSearchTerm (and mealDbCategory as a fallback — see mealDbClient's
+// getMealImage for why a fallback is needed). Same meal can appear more
+// than once across the week (e.g. a repeated snack), so results are cached
+// in memory by search term — each unique meal is only fetched once per app
+// session, not once per card.
 // ============================================================================
 import { useEffect, useState } from 'react';
-import { searchMealByName } from '../api/mealDbClient';
-import type { TheMealDbMeal } from '../types/meal';
+import { getMealImage } from '../api/mealDbClient';
+import type { TheMealDbMeal, TheMealDbCategory } from '../types/meal';
 
 interface MealDetailsState {
   imageUrl: string | null;
@@ -21,9 +23,14 @@ interface MealDetailsState {
 // survives for the lifetime of the page (not persisted between sessions).
 const detailsCache = new Map<string, TheMealDbMeal | null>();
 
-export function useMealDetails(searchTerm: string): MealDetailsState {
+export function useMealDetails(
+  searchTerm: string,
+  category: TheMealDbCategory
+): MealDetailsState {
+  const cacheKey = searchTerm; // search term alone is already unique per catalog entry
+
   const [state, setState] = useState<MealDetailsState>(() => {
-    const cached = detailsCache.get(searchTerm);
+    const cached = detailsCache.get(cacheKey);
     if (cached === undefined) {
       // Not fetched yet.
       return { imageUrl: null, instructions: null, isLoading: true, hasError: false };
@@ -39,14 +46,14 @@ export function useMealDetails(searchTerm: string): MealDetailsState {
 
   useEffect(() => {
     // Already resolved from cache in the initial state above — nothing to do.
-    if (detailsCache.has(searchTerm)) {
+    if (detailsCache.has(cacheKey)) {
       return;
     }
 
     let cancelled = false;
 
-    searchMealByName(searchTerm).then((result) => {
-      detailsCache.set(searchTerm, result);
+    getMealImage(searchTerm, category).then((result) => {
+      detailsCache.set(cacheKey, result);
 
       // Avoid setting state if the component unmounted (e.g. user switched
       // days) before the fetch resolved.
@@ -63,7 +70,7 @@ export function useMealDetails(searchTerm: string): MealDetailsState {
     return () => {
       cancelled = true;
     };
-  }, [searchTerm]);
+  }, [cacheKey, searchTerm, category]);
 
   return state;
 }
