@@ -53,9 +53,25 @@ export interface MealWithDetails extends MealCatalogEntry {
   isLoadingDetails: boolean;
 }
 
+// A catalog entry as it actually appears in a generated day's plan. The
+// generator scales portion sizes up or down (`portionMultiplier`) so each
+// day's totals land on the user's targets — `plannedMacros` are the
+// already-scaled numbers to display; `estimatedMacros` (inherited) stays
+// as the original single-serving reference values.
+export interface PlannedMeal extends MealCatalogEntry {
+  portionMultiplier: number;
+  plannedMacros: {
+    calories: number;
+    proteinG: number;
+    carbsG: number;
+    fatG: number;
+    fiberG: number;
+  };
+}
+
 export interface DayMealPlan {
   day: DayOfWeek;
-  meals: MealCatalogEntry[];
+  meals: PlannedMeal[];
   totals: {
     calories: number;
     proteinG: number;
